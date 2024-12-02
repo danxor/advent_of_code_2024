@@ -9,11 +9,17 @@ import java.time.LocalDateTime;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.lang.reflect.*;
 
 public abstract class DayRunner {
 	public Boolean debug = false;
+	public Boolean runTests = true;
+	public Boolean runActual = true;
 
-	public DayRunner() {
+	public DayRunner(Boolean debug, Boolean runTests, Boolean runActual) {
+		this.debug = debug;
+		this.runTests = runTests;
+		this.runActual = runActual;
 	}
 
 	protected static List<String> getLines(String fileName) {
@@ -28,12 +34,54 @@ public abstract class DayRunner {
 		return null;
 	}
 
+	protected void Run() {
+		Integer day = getDayNumber();
+
+		if (this.runTests) {
+			String exampleFileName = String.format("data/example%02d.txt", day);
+
+			this.parse(exampleFileName);
+
+			String expectedFirstResult = this.getExpectedFirstResult();
+			String actualFirstResult = this.getFirstResult();
+
+			Assert(expectedFirstResult, actualFirstResult);
+
+			if (!runActual) {
+				System.out.println(String.format("Day #%02d, part 1: %s", day, actualFirstResult));
+			}
+
+			String expectedSecondResult = this.getExpectedSecondResult();
+			String actualSecondResult = this.getSecondResult();
+
+			Assert(expectedSecondResult, actualSecondResult);
+
+			if (!runActual) {
+				System.out.println(String.format("Day #%02d, part 2: %s", day, actualSecondResult));
+			}
+		}
+
+		if (this.runActual) {
+			String inputFileName = String.format("data/input%02d.txt", day);
+			LocalDateTime now = LocalDateTime.now();
+			
+			InputDownloader.ensureInputExists(now.getYear(), day, inputFileName);
+
+			this.parse(inputFileName);
+
+			String firstResult = this.getFirstResult();
+			System.out.println(String.format("Day #%02d, part 1: %s", day, firstResult));
+
+			String secondResult = this.getSecondResult();
+			System.out.println(String.format("Day #%02d, part 2: %s", day, secondResult));
+		}
+	}
+
 	public static void main(String[] args) {
+		List<Integer> runDays = new ArrayList<>();
+		Boolean debug = false;
 		Boolean runTests = true;
 		Boolean runActual = true;
-		Boolean runDebug = false;
-		List<Integer> runDays = new ArrayList<>();
-		LocalDateTime now = LocalDateTime.now();
 
 		for(String arg: args) {
 			if (arg.equals("--skip-tests")) {
@@ -41,13 +89,15 @@ public abstract class DayRunner {
 			} else if (arg.equals("--only-tests"))  {
 				runActual = false;
 			} else if (arg.equals("--debug")) {
-				runDebug = true;
+				debug = true;
 			} else if (isInteger(arg)) {
-				runDays.add(Integer.parseInt(arg));
+				runDays.add(Integer.valueOf(arg));
 			}
 		}
 
 		if (runDays.size() == 0) {
+			LocalDateTime now = LocalDateTime.now();
+
 			for(Integer day = 1; day < now.getDayOfMonth(); day++) {
 				runDays.add(day);
 			}
@@ -59,95 +109,7 @@ public abstract class DayRunner {
 		}
 
 		for(Integer day: runDays) {
-			String className = String.format("Day%02d", day);
-			String exampleFileName = String.format("data/example%02d.txt", day);
-			String inputFileName = String.format("data/input%02d.txt", day);
-
-			DayRunner instance = createInstance(className);
-			instance.debug = runDebug;
-
-			if (runTests) {
-				instance.parse(exampleFileName);
-
-				String expectedFirstResult = instance.getExpectedFirstResult();
-				String actualFirstResult = instance.getFirstResult();
-
-				Assert(expectedFirstResult, actualFirstResult);
-
-				if (!runActual) {
-					System.out.println(String.format("Day #%02d, part 1: %s", day, actualFirstResult));
-				}
-
-				String expectedSecondResult = instance.getExpectedSecondResult();
-				String actualSecondResult = instance.getSecondResult();
-
-				Assert(expectedSecondResult, actualSecondResult);
-
-				if (!runActual) {
-					System.out.println(String.format("Day #%02d, part 2: %s", day, actualSecondResult));
-				}
-			}
-
-			if (runActual) {
-				ensureInputExists(now.getYear(), day, inputFileName);
-
-				instance.parse(inputFileName);
-
-				String firstResult = instance.getFirstResult();
-				System.out.println(String.format("Day #%02d, part 1: %s", day, firstResult));
-
-				String secondResult = instance.getSecondResult();
-				System.out.println(String.format("Day #%02d, part 2: %s", day, secondResult));
-			}
-		}
-	}
-
-	private static String[] getCurlCommand(String url, String outputFileName) {
-		String fileName = "cookie.txt";
-
-		Boolean fileExists = Files.exists(Paths.get(fileName));
-		if (!fileExists) {
-			System.out.println("You are missing the " + fileName + " file");
-			System.exit(1);
-		}
-
-		List<String> parameters = new ArrayList<>();
-		parameters.add("/usr/bin/curl");
-
-		for(String line : getLines(fileName)) {
-			parameters.add("-H");
-			parameters.add("Cookie: " + line);
-		}
-
-		parameters.add(url);
-		parameters.add("-o");
-		parameters.add(outputFileName);
-
-		return parameters.stream().toArray(String[]::new);
-	}
-
-	private static void ensureInputExists(Integer year, Integer day, String fileName) {
-		Boolean fileExists = Files.exists(Paths.get(fileName));
-		if (!fileExists) {
-			String downloadUrl = String.format("https://adventofcode.com/%d/day/%d/input", year, day);
-
-			String[] parameters = getCurlCommand(downloadUrl, fileName);
-
-			ProcessBuilder pb = new ProcessBuilder(parameters);
-
-			try {
-				Process process = pb.start();
-
-				Integer exitCode = process.waitFor();
-				if (exitCode != 0) {
-					System.out.println(String.format("curl exited with an error: %d", exitCode));
-					System.exit(1);
-				}
-			} catch (InterruptedException | IOException e) {
-				System.out.println("Failed to run curl");
-				e.printStackTrace();
-				System.exit(1);
-			}
+			createInstance(day, debug, runTests, runActual).Run();
 		}
 	}
 
@@ -156,6 +118,25 @@ public abstract class DayRunner {
 			System.out.println("Expected: " + expected);
 			System.out.println("Actual:   " + actual);
 			System.exit(1);
+		}
+	}
+
+	private static DayRunner createInstance(Integer day, Boolean debug, Boolean runTests, Boolean runActual) {
+		String className = String.format("Day%02d", day);
+
+		try {
+			Class[] constructorDef = new Class[] { Boolean.class, Boolean.class, Boolean.class };
+			Object[] constructorArguments = new Object[] { debug, runTests, runActual };
+
+			Class<?> clazz = Class.forName(className);
+
+			Constructor constructor = clazz.getDeclaredConstructor(constructorDef);
+			Object obj = constructor.newInstance(constructorArguments);
+
+			return (DayRunner)obj;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 
@@ -169,20 +150,8 @@ public abstract class DayRunner {
 		return false;
 	}
 
-	private static DayRunner createInstance(String className) {
-		try {
-			Class<?> clazz = Class.forName(className);
-
-			DayRunner instance = (DayRunner)clazz.getDeclaredConstructor().newInstance();
-
-			return instance;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
 	protected abstract void parse(String fileName);
+	protected abstract Integer getDayNumber();
 	protected abstract String getExpectedFirstResult();
 	protected abstract String getExpectedSecondResult();
 	protected abstract String getFirstResult();

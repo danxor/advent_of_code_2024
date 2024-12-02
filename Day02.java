@@ -8,6 +8,10 @@ import java.nio.file.Files;
 public class Day02 extends DayRunner {
 	List<List<Integer>> reports = null;
 
+	Day02(Boolean debug, Boolean runTests, Boolean runActual) {
+		super(debug, runTests, runActual);
+	}
+
 	protected void parse(String fileName) {
 		this.reports = new ArrayList<>();
 
@@ -23,6 +27,10 @@ public class Day02 extends DayRunner {
 
 				this.reports.add(res);
 			});
+	}
+
+	protected Integer getDayNumber() {
+		return 2;
 	}
 
 	protected String getExpectedFirstResult() {
@@ -147,5 +155,23 @@ public class Day02 extends DayRunner {
 		}
 
 		return count.toString();
+	}
+
+	public static void main(String[] args) {
+		Boolean debug = false;
+		Boolean runTests = true;
+		Boolean runActual = true;
+
+		for(String arg: args) {
+			if (arg.equals("--skip-tests")) {
+				runTests = false;
+			} else if (arg.equals("--only-tests"))  {
+				runActual = false;
+			} else if (arg.equals("--debug")) {
+				debug = true;
+			}
+		}
+
+		new Day02(debug, runTests, runActual).Run();
 	}
 }

@@ -11,6 +11,10 @@ public class Day01 extends DayRunner {
 	List<Integer> left = null;
 	List<Integer> right = null;
 
+	Day01(Boolean debug, Boolean runTests, Boolean runActual) {
+		super(debug, runTests, runActual);
+	}
+
 	protected void parse(String fileName) {
 		this.left = new ArrayList<>();
 		this.right = new ArrayList<>();
@@ -26,6 +30,10 @@ public class Day01 extends DayRunner {
 
 		Collections.sort(this.left);
 		Collections.sort(this.right);
+	}
+
+	protected Integer getDayNumber() {
+		return 1;
 	}
 
 	protected String getExpectedFirstResult() {
@@ -94,5 +102,23 @@ public class Day01 extends DayRunner {
 		}
 
 		return sum.toString();
+	}
+
+	public static void main(String[] args) {
+		Boolean debug = false;
+		Boolean runTests = true;
+		Boolean runActual = true;
+
+		for(String arg: args) {
+			if (arg.equals("--skip-tests")) {
+				runTests = false;
+			} else if (arg.equals("--only-tests"))  {
+				runActual = false;
+			} else if (arg.equals("--debug")) {
+				debug = true;
+			}
+		}
+
+		new Day01(debug, runTests, runActual).Run();
 	}
 }
