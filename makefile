@@ -1,0 +1,25 @@
+#!/usr/bin/env make
+
+JAR=/usr/bin/jar
+JAVAC=/usr/bin/javac
+
+RM=/usr/bin/rm
+RMFLAGS=-f
+
+SOURCES=$(wildcard *.java)
+CLASSES=$(SOURCES:.java=.class)
+
+all:	aoc.jar
+	java -jar aoc.jar
+
+aoc.jar:	$(CLASSES)
+	$(JAR) cmvf META-INF/MANIFEST.MF aoc.jar $(CLASSES)
+
+clean:
+	$(RM) $(RMFLAGS) $(CLASSES)
+
+proper:	clean
+	$(RM) $(RMFLAGS) aoc.jar
+
+%.class:	%.java
+	$(JAVAC) $<

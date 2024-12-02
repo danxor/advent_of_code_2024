@@ -1,0 +1,32 @@
+import java.util.List;
+import java.util.ArrayList;
+import java.lang.Math;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+
+public class Day extends DayRunner {
+	protected void parse(String fileName) {
+		getLines(fileName)
+			.stream()
+			.map(line -> line.split(" "))
+			.forEach(line -> {
+			});
+	}
+
+	protected String getExpectedFirstResult() {
+		return "X";
+	}
+
+	protected String getExpectedSecondResult() {
+		return "X";
+	}
+
+	protected String getFirstResult() {
+		return "X";
+	}
+
+	protected String getSecondResult() {
+		return "X";
+	}
+}
