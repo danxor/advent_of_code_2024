@@ -113,8 +113,9 @@ public abstract class DayRunner {
 		}
 	}
 
-	private static void Assert(String expected, String actual) {
+	private void Assert(String expected, String actual) {
 		if (!expected.equals(actual)) {
+			System.out.println("Test for day " + this.getDayNumber().toString() + " failed:");
 			System.out.println("Expected: " + expected);
 			System.out.println("Actual:   " + actual);
 			System.exit(1);
