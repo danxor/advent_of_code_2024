@@ -90,6 +90,12 @@ public abstract class DayRunner {
 				runActual = false;
 			} else if (arg.equals("--debug")) {
 				debug = true;
+			} else if (arg.equals("--today")) {
+				LocalDateTime now = LocalDateTime.now();
+				Integer today = now.getDayOfMonth();
+				if (now.getYear() == 2024 && now.getMonthValue() == 12 && today <= 25) {
+					runDays.add(today);
+				}
 			} else if (isInteger(arg)) {
 				runDays.add(Integer.valueOf(arg));
 			}
@@ -97,8 +103,15 @@ public abstract class DayRunner {
 
 		if (runDays.size() == 0) {
 			LocalDateTime now = LocalDateTime.now();
+			Integer maxDays = 25;
 
-			for(Integer day = 1; day < now.getDayOfMonth(); day++) {
+			if (now.getYear() < 2024 || now.getMonthValue() < 12) {
+				maxDays = 0;
+			} else if (now.getDayOfMonth() < 25) {
+				maxDays = now.getDayOfMonth();
+			}
+
+			for(Integer day = 1; day <= maxDays; day++) {
 				runDays.add(day);
 			}
 

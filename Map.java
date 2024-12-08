@@ -51,7 +51,11 @@ public class Map {
 	}
 
 	public Boolean isInside(Point pos) {
-		if (pos.X >= 0 && pos.X < this.maxX && pos.Y >= 0 && pos.Y < this.maxY) {
+		return this.isInside(pos.X, pos.Y);
+	}
+
+	public Boolean isInside(int x, int y) {
+		if (x >= 0 && x < this.maxX && y >= 0 && y < this.maxY) {
 			return true;
 		}
 
@@ -71,16 +75,24 @@ public class Map {
 	}
 
 	public Character get(Point pos) {
-		if (isInside(pos)) {
-			return this.map[pos.Y][pos.X];
+		return this.get(pos.X, pos.Y);
+	}
+
+	public Character get(int x, int y) {
+		if (isInside(x, y)) {
+			return this.map[y][x];
 		}
 
 		return '.';
 	}
 
 	public void set(Point pos, Character c) {
-		if (isInside(pos)) {
-			this.map[pos.Y][pos.X] = c;
+		this.set(pos.X, pos.Y, c);
+	}
+
+	public void set(int x, int y, Character c) {
+		if (isInside(x, y)) {
+			this.map[y][x] = c;
 		}
 	}
 }

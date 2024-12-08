@@ -10,7 +10,7 @@ SOURCES=$(wildcard *.java)
 CLASSES=$(SOURCES:.java=.class)
 
 all:	aoc.jar
-	java -jar aoc.jar
+	java -jar aoc.jar --today
 
 aoc.jar:	$(CLASSES)
 	$(JAR) cmvf META-INF/MANIFEST.MF aoc.jar $(CLASSES)

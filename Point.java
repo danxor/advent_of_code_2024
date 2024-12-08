@@ -6,16 +6,20 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 
 public class Point {
-	public final Integer X;
-	public final Integer Y;
+	public final int X;
+	public final int Y;
 
-	Point(Integer x, Integer y) {
+	Point(int x, int y) {
 		this.X = x;
 		this.Y = y;
 	}
 
 	public Point add(Point delta) {
 		return new Point(this.X + delta.X, this.Y + delta.Y);
+	}
+
+	public Point mirror(Point other) {
+		return new Point(this.X - (other.X - this.X), this.Y - (other.Y - this.Y));
 	}
 
 	@Override
@@ -31,11 +35,11 @@ public class Point {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		return prime * this.X.hashCode() * this.Y.hashCode();
+		return prime * Integer.hashCode(this.X) * Integer.hashCode(this.Y);
 	}
 
 	@Override
 	public String toString() {
-		return "(" + this.X.toString() + "," + this.Y.toString() + ")";
+		return "(" + Integer.toString(this.X) + "," + Integer.toString(this.Y) + ")";
 	}
 }
