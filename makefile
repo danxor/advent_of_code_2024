@@ -13,10 +13,10 @@ all:	aoc.jar
 	java -jar aoc.jar --today
 
 aoc.jar:	$(CLASSES)
-	$(JAR) cmvf META-INF/MANIFEST.MF aoc.jar $(CLASSES)
+	$(JAR) cmvf META-INF/MANIFEST.MF aoc.jar *.class
 
 clean:
-	$(RM) $(RMFLAGS) $(CLASSES)
+	$(RM) $(RMFLAGS) *.class
 
 proper:	clean
 	$(RM) $(RMFLAGS) aoc.jar
