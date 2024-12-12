@@ -1,30 +1,36 @@
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 import java.lang.Math;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 
 public class Map {
+	public static final Point[] STRAIGHT_DELTA = new Point[] { new Point(-1, 0), new Point(0, -1), new Point(1, 0), new Point(0, 1) };
+	public static final Point[] DIAGONAL_DELTA = new Point[] { new Point(-1, -1), new Point(0, -1), new Point(1, -1), new Point(-1, 0), new Point(1, 0), new Point(-1, 1), new Point(0, 1), new Point(1, 1) };
+	public static final Point[] CROSS_DELTA = new Point[] { new Point(-1, -1), new Point(1, -1), new Point(-1, 1), new Point(1, -1) };
+
 	private final Character[][] map;
-	private final Integer maxX;
-	private final Integer maxY;
+	private final int width;
+	private final int height;
 
 	Map(List<String> lines) {
-		this.maxY = lines.size();
-		if (this.maxY > 0) {
-			this.maxX = lines.get(0).length();
+		this.height = lines.size();
+		if (this.height > 0) {
+			this.width = lines.get(0).length();
 		} else {
-			this.maxX = 0;
+			this.width = 0;
 		}
 
-		this.map = new Character[this.maxY][this.maxX];
+		this.map = new Character[this.height][this.width];
 
-		for(Integer y = 0; y < this.maxY; y++) {
+		for(Integer y = 0; y < this.height; y++) {
 			String line = lines.get(y);
 
-			for(Integer x = 0; x < this.maxX; x++) {
+			for(Integer x = 0; x < this.width; x++) {
 				this.map[y][x] = line.charAt(x);
 			}
 		}
@@ -47,7 +53,7 @@ public class Map {
 	}
 
 	public Integer[] size() {
-		return new Integer[] { this.maxX, this.maxY };
+		return new Integer[] { this.width, this.height };
 	}
 
 	public Boolean isInside(Point pos) {
@@ -55,7 +61,7 @@ public class Map {
 	}
 
 	public Boolean isInside(int x, int y) {
-		if (x >= 0 && x < this.maxX && y >= 0 && y < this.maxY) {
+		if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
 			return true;
 		}
 
@@ -63,8 +69,8 @@ public class Map {
 	}
 
 	public Point find(Character c) {
-		for(Integer y = 0; y < this.maxY; y++) {
-			for(Integer x = 0; x < this.maxX; x++) {
+		for(Integer y = 0; y < this.height; y++) {
+			for(Integer x = 0; x < this.width; x++) {
 				if (this.map[y][x] == c) {
 					return new Point(x, y);
 				}
@@ -94,5 +100,50 @@ public class Map {
 		if (isInside(x, y)) {
 			this.map[y][x] = c;
 		}
+	}
+
+	public List<Region> getRegions() {
+		Set<Point> visited = new HashSet<>();
+		List<Region> regions = new ArrayList<>();
+
+		for(int y = 0; y < this.height; y++) {
+			for(int x = 0; x < this.width; x++) {
+				Point p = new Point(x, y);
+				if (visited.contains(p)) continue;
+				Region reg = getRegion(visited, p);
+				regions.add(reg);
+			}
+		}
+
+		return regions;
+	}
+
+	public Region getRegion(Set<Point> visited, Point p) {
+		Set<Point> region = new HashSet<>();
+		List<Point> queue = new ArrayList<>();
+
+		Character letter = this.get(p);
+		region.add(p);
+		visited.add(p);
+		queue.add(p);
+
+		while(queue.size() > 0) {
+			p = queue.remove(0);
+
+			for(Point d: Map.STRAIGHT_DELTA) {
+				Point n = p.add(d);
+
+				if (visited.contains(n)) continue;
+
+				Character c = this.get(n);
+				if (letter == c) {
+					visited.add(n);
+					region.add(n);
+					queue.add(n);
+				}
+			}
+		}
+
+		return new Region(letter, region);
 	}
 }
