@@ -10,6 +10,11 @@ SOURCES=$(wildcard *.java)
 CLASSES=$(SOURCES:.java=.class)
 
 all:	aoc.jar
+
+debug:	aoc.jar
+	java -jar aoc.jar --today --debug
+
+today:	aoc.jar
 	java -jar aoc.jar --today
 
 aoc.jar:	$(CLASSES)

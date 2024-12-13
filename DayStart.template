@@ -13,13 +13,7 @@ public class Day extends DayRunner {
 	}
 
 	protected void parse(String fileName) {
-		this.lines = new ArrayList<>();
-
-		getLines(fileName)
-			.stream()
-			.forEach(line -> {
-				lines.add(line);
-			});
+		this.lines = getLines(fileName);
 	}
 
 	protected Integer getDayNumber() {
