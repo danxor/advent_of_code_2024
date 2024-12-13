@@ -25,12 +25,12 @@ public class Map {
 			this.width = 0;
 		}
 
-		this.map = new Character[this.height][this.width];
+		this.map = new Character[(int)this.height][(int)this.width];
 
-		for(Integer y = 0; y < this.height; y++) {
+		for(int y = 0; y < this.height; y++) {
 			String line = lines.get(y);
 
-			for(Integer x = 0; x < this.width; x++) {
+			for(int x = 0; x < this.width; x++) {
 				this.map[y][x] = line.charAt(x);
 			}
 		}
@@ -57,7 +57,7 @@ public class Map {
 	}
 
 	public Boolean isInside(Point pos) {
-		return this.isInside(pos.X, pos.Y);
+		return this.isInside((int)pos.X, (int)pos.Y);
 	}
 
 	public Boolean isInside(int x, int y) {
@@ -81,7 +81,7 @@ public class Map {
 	}
 
 	public Character get(Point pos) {
-		return this.get(pos.X, pos.Y);
+		return this.get((int)pos.X, (int)pos.Y);
 	}
 
 	public Character get(int x, int y) {
@@ -93,7 +93,7 @@ public class Map {
 	}
 
 	public void set(Point pos, Character c) {
-		this.set(pos.X, pos.Y, c);
+		this.set((int)pos.X, (int)pos.Y, c);
 	}
 
 	public void set(int x, int y, Character c) {
