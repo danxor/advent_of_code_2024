@@ -10,6 +10,8 @@ import java.nio.file.Files;
 public class Day14 extends DayRunner {
 	private List<Robot> robots;
 	private List<String> lines;
+	private int width = 101;
+	private int height = 103;
 
 	Day14(Boolean debug, Boolean runTests, Boolean runActual) {
 		super(debug, runTests, runActual);
@@ -27,6 +29,15 @@ public class Day14 extends DayRunner {
 			Robot r = new Robot(rp, rv);
 			this.robots.add(r);
 		}
+
+		// This is a bit hacky to disguish the test set from the real set
+		if (this.robots.size() <= 12) {
+			this.width = 11;
+			this.height = 7;
+		} else {
+			this.width =  101;
+			this.height = 103;
+		}
 	}
 
 	protected Integer getDayNumber() {
@@ -42,48 +53,30 @@ public class Day14 extends DayRunner {
 	}
 
 	protected String getFirstResult() {
-		int width = 101;
-		int height = 103;
-
-		// This is a bit hacky to disguish the test set from the real set
-		if (this.robots.size() <= 12) {
-			width = 11;
-			height = 7;
-		}
-
 		List<Robot> cur = this.robots;
 
 		if (this.debug) {
 			System.out.println("Initial");
-			printMap(cur, width, height);
+			printMap(cur);
 		}
 
 		for(int s = 0; s < 100; s++) {
-			cur = moveRobots(cur, width, height);
+			cur = moveRobots(cur);
 			if (this.debug) {
 				System.out.println("After " + Integer.toString(1 + s) + " seconds");
-				printMap(cur, width, height);
+				printMap(cur);
 			}
 		}
 
 		if (this.debug) {
 			System.out.println("Final");
-			printMap(cur, width, height);
+			printMap(cur);
 		}
 
-		return getSafetyFactor(cur, width, height).toString();
+		return getSafetyFactor(cur).toString();
 	}
 
 	protected String getSecondResult() {
-		int width = 101;
-		int height = 103;
-
-		// This is a bit hacky to disguish the test set from the real set
-		if (this.robots.size() <= 12) {
-			width = 11;
-			height = 7;
-		}
-
 		boolean overlaps = true;
 
 		List<Robot> cur = this.robots;
@@ -93,7 +86,7 @@ public class Day14 extends DayRunner {
 		while(overlaps) {
 			HashSet<Point> set = new HashSet<>();
 
-			cur = moveRobots(cur, width, height);
+			cur = moveRobots(cur);
 			count++;
 
 			overlaps = false;
@@ -109,16 +102,16 @@ public class Day14 extends DayRunner {
 		return count.toString();
 	}
 
-	protected List<Robot> moveRobots(List<Robot> robots, int width, int height) {
+	protected List<Robot> moveRobots(List<Robot> robots) {
 		List<Robot> new_robots = new ArrayList<Robot>();
 
 		for(Robot r: robots) {
 			long x = r.p.X + r.v.X;
-			while(x >= width) x -= width;
+			while(x >= width) x -= this.width;
 			while(x < 0) x += width;
 
 			long y = r.p.Y + r.v.Y;
-			while(y >= height) y -= height;
+			while(y >= height) y -= this.height;
 			while(y < 0) y += height;
 
 			Point p = new Point(x, y);
@@ -128,9 +121,9 @@ public class Day14 extends DayRunner {
 		return new_robots;
 	}
 
-	protected Long getSafetyFactor(List<Robot> robots, int w, int h) {
-		int mw = w / 2;
-		int mh = h / 2;
+	protected Long getSafetyFactor(List<Robot> robots) {
+		int mw = this.width / 2;
+		int mh = this.height / 2;
 
 		long[] counts = new long[] { 0, 0, 0, 0 };
 
@@ -140,9 +133,9 @@ public class Day14 extends DayRunner {
 			}
 
 			if (r.p.X >= 0 && r.p.X < mw && r.p.Y >= 0 && r.p.Y < mh) counts[0]++;
-			if (r.p.X >= 1 + mw && r.p.X < w && r.p.Y >= 0 && r.p.Y < mh) counts[1]++;
-			if (r.p.X >= 0 && r.p.X < mw && r.p.Y >= 1 + mh && r.p.Y < h) counts[2]++;
-			if (r.p.X >= 1 + mw && r.p.X < w && r.p.Y >= 1 + mh && r.p.Y < h) counts[3]++;
+			if (r.p.X >= 1 + mw && r.p.X < this.width && r.p.Y >= 0 && r.p.Y < mh) counts[1]++;
+			if (r.p.X >= 0 && r.p.X < mw && r.p.Y >= 1 + mh && r.p.Y < this.height) counts[2]++;
+			if (r.p.X >= 1 + mw && r.p.X < this.width && r.p.Y >= 1 + mh && r.p.Y < this.height) counts[3]++;
 		}
 
 		if (this.debug) {
@@ -154,7 +147,7 @@ public class Day14 extends DayRunner {
 		return counts[0] * counts[1] * counts[2] * counts[3];
 	}
 
-	protected void printMap(List<Robot> robots, int w, int h) {
+	protected void printMap(List<Robot> robots) {
 		HashMap<Point, Integer> counts = new HashMap<>();
 
 		for(Robot r: robots) {
@@ -165,8 +158,8 @@ public class Day14 extends DayRunner {
 			}
 		}
 
-		for(int y = 0; y < h; y++) {
-			for(int x = 0; x < w; x++) {
+		for(int y = 0; y < this.height; y++) {
+			for(int x = 0; x < this.width; x++) {
 				Point p = new Point(x, y);
 				if (counts.containsKey(p)) {
 					String c = Integer.toString(counts.get(p));
