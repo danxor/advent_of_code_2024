@@ -1,13 +1,9 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.stream.Stream;
 import java.lang.Class;
 import java.time.LocalDateTime;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.lang.reflect.*;
 
@@ -45,7 +41,7 @@ public abstract class DayRunner {
 			String expectedFirstResult = this.getExpectedFirstResult();
 			String actualFirstResult = this.getFirstResult();
 
-			Assert(expectedFirstResult, actualFirstResult);
+			Assert(expectedFirstResult, actualFirstResult, 1);
 
 			if (!runActual) {
 				System.out.println(String.format("Day #%02d, part 1: %s", day, actualFirstResult));
@@ -54,7 +50,7 @@ public abstract class DayRunner {
 			String expectedSecondResult = this.getExpectedSecondResult();
 			String actualSecondResult = this.getSecondResult();
 
-			Assert(expectedSecondResult, actualSecondResult);
+			Assert(expectedSecondResult, actualSecondResult, 2);
 
 			if (!runActual) {
 				System.out.println(String.format("Day #%02d, part 2: %s", day, actualSecondResult));
@@ -126,9 +122,9 @@ public abstract class DayRunner {
 		}
 	}
 
-	private void Assert(String expected, String actual) {
+	private void Assert(String expected, String actual, int part) {
 		if (!expected.equals(actual)) {
-			System.out.println("Test for day " + this.getDayNumber().toString() + " failed:");
+			System.out.println("Test for day " + this.getDayNumber().toString() + " part " + Integer.toString(part) + " failed:");
 			System.out.println("Expected: " + expected);
 			System.out.println("Actual:   " + actual);
 			System.exit(1);

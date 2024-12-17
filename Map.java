@@ -1,9 +1,7 @@
 import java.util.List;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
-import java.lang.Math;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.nio.file.Files;
@@ -14,8 +12,9 @@ public class Map {
 	public static final Point[] CROSS_DELTA = new Point[] { new Point(-1, -1), new Point(1, -1), new Point(-1, 1), new Point(1, -1) };
 
 	private final Character[][] map;
-	private final int width;
-	private final int height;
+	
+	public final int width;
+	public final int height;
 
 	Map(List<String> lines) {
 		this.height = lines.size();
@@ -38,11 +37,15 @@ public class Map {
 
 	}
 
+	public static Map createFromLines(List<String> lines) {
+		return new Map(lines);
+	}
+
 	public static Map createFromFile(String fileName) {
 		try {
 			List<String> lines = Files.readAllLines(Paths.get(fileName));
 
-			return new Map(lines);
+			return Map.createFromLines(lines);
 		} catch (IOException e) {
 			System.out.println(String.format("Failed to read content from %s", fileName));
 			e.printStackTrace();
