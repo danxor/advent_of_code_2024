@@ -3,9 +3,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Collections;
 import java.lang.Math;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.nio.file.Files;
 
 public class Day01 extends DayRunner {
 	List<Integer> left = null;

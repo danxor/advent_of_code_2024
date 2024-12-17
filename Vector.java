@@ -1,10 +1,3 @@
-import java.util.List;
-import java.util.ArrayList;
-import java.lang.Math;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.nio.file.Files;
-
 public class Vector {
 	public final Point pos;
 	public final Point dir;

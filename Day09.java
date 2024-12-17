@@ -2,10 +2,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Collections;
-import java.lang.Math;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.nio.file.Files;
 
 public class Day09 extends DayRunner {
 	private List<String> lines;

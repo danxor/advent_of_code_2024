@@ -1,10 +1,6 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.lang.Math;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.nio.file.Files;
 
 public class Day05 extends DayRunner {
 	private Boolean parsingRules;
@@ -20,7 +16,7 @@ public class Day05 extends DayRunner {
 		this.updates = new ArrayList<>();
 		this.rules = new Hashtable<>();
 
-		for(String line: this.getLines(fileName)) {
+		for(String line: DayRunner.getLines(fileName)) {
 			if (null == line || line.length() == 0) {
 				this.parsingRules = false;
 				continue;

@@ -1,10 +1,6 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.lang.Math;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.nio.file.Files;
 
 public class Day10 extends DayRunner {
 	private final Point[] deltas = new Point[] { new Point(1, 0), new Point(0, 1), new Point(-1, 0), new Point(0, -1) };
@@ -94,7 +90,6 @@ public class Day10 extends DayRunner {
 		Integer sum = 0;
 
 		for(Point start: this.starts) {
-			HashSet<Point> ends = new HashSet<>();
 			List<Point> current = new ArrayList<>();
 
 			current.add(start);

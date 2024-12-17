@@ -1,10 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.util.HashSet;
-import java.lang.Math;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.nio.file.Files;
 
 public class Day06 extends DayRunner {
 	private HashSet<Point> visited;

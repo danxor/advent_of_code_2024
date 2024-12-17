@@ -1,17 +1,10 @@
 import java.util.List;
 import java.util.ArrayList;
-import java.lang.Math;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.nio.file.Files;
 
 public class Day04 extends DayRunner {
 	private List<String> lines;
 	private Integer maxY;
 	private Integer maxX;
-
-	private final String wordOne = "XMAS";
-	private final String wordTwo = "MAS";
 
 	Day04(Boolean debug, Boolean runTests, Boolean runActual) {
 		super(debug, runTests, runActual);

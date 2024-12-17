@@ -1,9 +1,5 @@
 import java.util.List;
 import java.util.ArrayList;
-import java.lang.Math;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.nio.file.Files;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
