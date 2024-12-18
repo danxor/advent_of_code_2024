@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import map.Point;
+import map.Map;
 
 public class Day15 extends DayRunner {
 	private HashMap<Character, Point> deltas;

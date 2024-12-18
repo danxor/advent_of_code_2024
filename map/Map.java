@@ -1,3 +1,5 @@
+package map;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Set;
@@ -7,14 +9,52 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 
 public class Map {
-	public static final Point[] STRAIGHT_DELTA = new Point[] { new Point(-1, 0), new Point(0, -1), new Point(1, 0), new Point(0, 1) };
-	public static final Point[] DIAGONAL_DELTA = new Point[] { new Point(-1, -1), new Point(0, -1), new Point(1, -1), new Point(-1, 0), new Point(1, 0), new Point(-1, 1), new Point(0, 1), new Point(1, 1) };
-	public static final Point[] CROSS_DELTA = new Point[] { new Point(-1, -1), new Point(1, -1), new Point(-1, 1), new Point(1, -1) };
+    /**
+     * Delta points for moving North, South, East and West.
+     */
+    public static final Point[] STRAIGHT_DELTA = new Point[] {
+        new Point(-1, 0),
+        new Point(0, -1),
+        new Point(1, 0),
+        new Point(0, 1)
+    };
+
+    /**
+     * Delta points for moving North, South, East and West as well as moving
+     * diagonally; i.e. North-West, South-East and so forth.
+     */
+    public static final Point[] DIAGONAL_DELTA = new Point[] {
+        new Point(-1, -1),
+        new Point(0, -1),
+        new Point(1, -1),
+        new Point(-1, 0),
+        new Point(1, 0),
+        new Point(-1, 1),
+        new Point(0, 1),
+        new Point(1, 1)
+    };
+
+    /**
+     * Delta points for only moving diagonally; i.e. only North-West,
+     * North-East, South-West and South-East.
+     */
+    public static final Point[] CROSS_DELTA = new Point[] {
+        new Point(-1, -1),
+        new Point(1, -1),
+        new Point(-1, 1),
+        new Point(1, -1)
+    };
 
 	private final Character[][] map;
 	
 	public final int width;
 	public final int height;
+
+	Map(int width, int height) {
+		this.width = width;
+		this.height = height;
+		this.map = new Character[height][width];
+	}
 
 	Map(List<String> lines) {
 		this.height = lines.size();
@@ -24,7 +64,7 @@ public class Map {
 			this.width = 0;
 		}
 
-		this.map = new Character[(int)this.height][(int)this.width];
+		this.map = new Character[this.height][this.width];
 
 		for(int y = 0; y < this.height; y++) {
 			String line = lines.get(y);
@@ -33,8 +73,6 @@ public class Map {
 				this.map[y][x] = line.charAt(x);
 			}
 		}
-
-
 	}
 
 	public static Map createFromLines(List<String> lines) {
@@ -53,6 +91,18 @@ public class Map {
 		}
 
 		return null;
+	}
+
+	public Map clone() {
+		Map m = new Map(this.width, this.height);
+	
+		for(int y = 0; y < this.height; y++) {
+			for(int x = 0; x < this.width; x++) {
+				m.set(x, y, this.get(x, y));
+			}
+		}
+	
+		return m;
 	}
 
 	public Integer[] size() {
@@ -119,6 +169,25 @@ public class Map {
 		}
 
 		return regions;
+	}
+
+	public void print() {
+		System.out.print(" ");
+		for(int i = 0; i < this.width; i++) {
+			System.out.print(Integer.toString(i % 10));
+		}
+
+		System.out.println("");
+
+		for(int y = 0; y < this.width; y++) {
+			System.out.print(Integer.toString(y % 10));
+
+			for(int x = 0; x < this.width; x++) {
+				Character c = this.get(x, y);
+				System.out.print(Character.toString(c));
+			}
+			System.out.println("");
+		}
 	}
 
 	public Region getRegion(Set<Point> visited, Point p) {

@@ -1,3 +1,5 @@
+package map;
+
 public class PointDirection {
     public final int x;
     public final int y;

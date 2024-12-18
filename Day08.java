@@ -1,5 +1,7 @@
 import java.util.HashMap;
 import java.util.HashSet;
+import map.Point;
+import map.Map;
 
 public class Day08 extends DayRunner {
 	private HashMap<Character, HashSet<Point>> antennas;

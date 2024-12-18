@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import map.Point;
 
 public class Day13 extends DayRunner {
 	private List<ClawMachine> machines;

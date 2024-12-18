@@ -1,4 +1,6 @@
 import java.util.List;
+import map.Region;
+import map.Map;
 
 public class Day12 extends DayRunner {
 	private List<Region> regions;

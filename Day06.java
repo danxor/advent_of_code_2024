@@ -1,4 +1,7 @@
 import java.util.HashSet;
+import map.Map;
+import map.Point;
+import map.Vector;
 
 public class Day06 extends DayRunner {
 	private HashSet<Point> visited;

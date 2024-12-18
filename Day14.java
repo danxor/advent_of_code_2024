@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import map.Point;
 
 public class Day14 extends DayRunner {
 	private List<Robot> robots;

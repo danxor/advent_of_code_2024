@@ -1,6 +1,8 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
+import map.Point;
+import map.Map;
 
 public class Day10 extends DayRunner {
 	private final Point[] deltas = new Point[] { new Point(1, 0), new Point(0, 1), new Point(-1, 0), new Point(0, -1) };

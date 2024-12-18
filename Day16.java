@@ -3,6 +3,9 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import map.Point;
+import map.Map;
+import map.PointDirection;
 
 public class Day16 extends DayRunner {
 	private static final Point[] DELTA = new Point[] {

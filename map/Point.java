@@ -1,8 +1,10 @@
+package map;
+
 public class Point {
 	public final long X;
 	public final long Y;
 
-	Point(long x, long y) {
+	public Point(long x, long y) {
 		this.X = x;
 		this.Y = y;
 	}

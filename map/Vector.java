@@ -1,8 +1,10 @@
+package map;
+
 public class Vector {
 	public final Point pos;
 	public final Point dir;
 
-	Vector(Point pos, Point dir) {
+	public Vector(Point pos, Point dir) {
 		this.pos = pos;
 		this.dir = dir;
 	}
