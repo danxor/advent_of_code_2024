@@ -45,18 +45,22 @@ public class Map {
         new Point(1, -1)
     };
 
+	public Character outOfBoundsChar;
+
 	private final Character[][] map;
 	
 	public final int width;
 	public final int height;
 
 	Map(int width, int height) {
+		this.outOfBoundsChar = '.';
 		this.width = width;
 		this.height = height;
 		this.map = new Character[height][width];
 	}
 
 	Map(List<String> lines) {
+		this.outOfBoundsChar = '.';
 		this.height = lines.size();
 		if (this.height > 0) {
 			this.width = lines.get(0).length();
@@ -142,7 +146,7 @@ public class Map {
 			return this.map[y][x];
 		}
 
-		return '.';
+		return this.outOfBoundsChar;
 	}
 
 	public void set(Point pos, Character c) {

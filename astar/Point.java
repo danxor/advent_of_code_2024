@@ -9,6 +9,10 @@ public class Point implements Comparable<Point> {
         this.y = y;
     }
 
+    public Point add(int dx, int dy) {
+        return new Point(this.x + dx, this.y + dy);
+    }
+
     public Point add(Point delta) {
         return new Point(this.x + delta.x, this.y + delta.y);
     }
