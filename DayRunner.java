@@ -135,11 +135,13 @@ public abstract class DayRunner {
 		String className = String.format("Day%02d", day);
 
 		try {
+			@SuppressWarnings("rawtypes")
 			Class[] constructorDef = new Class[] { Boolean.class, Boolean.class, Boolean.class };
 			Object[] constructorArguments = new Object[] { debug, runTests, runActual };
 
 			Class<?> clazz = Class.forName(className);
 
+			@SuppressWarnings("rawtypes")
 			Constructor constructor = clazz.getDeclaredConstructor(constructorDef);
 			Object obj = constructor.newInstance(constructorArguments);
 
