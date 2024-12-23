@@ -21,7 +21,7 @@ public class Day22 extends DayRunner {
 		this.buyers = new ArrayList<>();
 		this.lines = getLines(fileName);
 		for(String line: lines) {
-			buyers.add(new MonkeyBuyer(Integer.valueOf(line.strip())));
+			buyers.add(new MonkeyBuyer(Integer.valueOf(line.trim())));
 		}
 
 		if (this.debug) {
@@ -196,11 +196,11 @@ public class Day22 extends DayRunner {
 			return prices;
 		}
 
-		private static long mix(long secret, long mix) {
+		private long mix(long secret, long mix) {
 			return secret ^ mix;
 		}
 
-		private static int prune(long secret) {
+		private int prune(long secret) {
 			return (int)(secret & 16777215);
 		}
 	}

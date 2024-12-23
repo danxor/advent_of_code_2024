@@ -20,7 +20,7 @@ public class Day23 extends DayRunner {
 		this.connections = new HashMap<>();
 
 		for(String line: getLines(fileName)) {
-			String[] computers = line.strip().split("-");
+			String[] computers = line.split("-");
 
 			if (!connections.containsKey(computers[0])) {
 				connections.put(computers[0], new HashSet<>());
