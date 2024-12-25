@@ -17,7 +17,8 @@ public class Day25 extends DayRunner {
 		String data = "";
 
 		try {
-			data = Files.readString(Paths.get(fileName));
+			byte[] bytes = Files.readAllBytes(Paths.get(fileName));
+			data = new String(bytes);
 		} catch (IOException e) {
 			System.out.println(String.format("Failed to read content from %s", fileName));
 			e.printStackTrace();
